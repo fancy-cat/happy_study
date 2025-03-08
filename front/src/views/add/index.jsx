@@ -1,9 +1,10 @@
-import { Button, Form, Input, Radio,Checkbox } from 'antd';
+import { Form, Radio,Button } from 'antd';
 import React, { useState } from 'react';
-const { TextArea } = Input;
+import ToneFormItems from './toneFormItem';
+import SentenceFormItem from './sentenceFormItem';
 export default function Home() {
   const [form] = Form.useForm();
-  const [type] = useState(0);
+  const [type, setType] = useState(1);
   const typeOptions = [
     {
       label: '单词',
@@ -22,46 +23,37 @@ export default function Home() {
       value: 3
     },
   ];
-  const toneOptions = [0,1,2,3,4,5,6,7,8,9];
-  const onChange = (checkedValues) => {
-    console.log('checked = ', checkedValues);
-  };
+  const onFinish = (values) => {
+    console.log('Success:', values);
+    // 调接口
+  }
+  const FormItems = ({formType}) => {
+    return [<ToneFormItems />,<SentenceFormItem />][formType]
+  }
   return <div>
      <Form
       form={form}
       style={{
+        width: 400,
         maxWidth: 600,
       }}
       colon={false}
+      initialValues={{
+        type: 1
+      }}
+      onFinish={onFinish}
     >
-      <Form.Item name="layout">
+      <Form.Item name="type">
         <Radio.Group
           optionType="button"
-          value={type}
+          value={type} 
           options={typeOptions}
+          onChange={e => setType(e.target.value)}
         />
       </Form.Item>
-      <Form.Item label="单词" name="layout">
-        <Input placeholder="请输入" />
-      </Form.Item>
-      <Form.Item label="假名">
-        <Input placeholder="请输入" />
-      </Form.Item>
-      <Form.Item label="声调">
-        <Checkbox.Group
-          options={toneOptions}
-          defaultValue={[]}
-          onChange={onChange}
-        />
-      </Form.Item>
-      <Form.Item label="句子">
-      <TextArea rows={2} placeholder="请输入"/>
-      </Form.Item>
-      <Form.Item label="备注">
-        <TextArea rows={4} placeholder="请输入"/>
-      </Form.Item>
+      <FormItems formType={type} />
       <Form.Item>
-        <Button type="primary">提交</Button>
+        <Button type="primary" htmlType="submit">提交</Button>
       </Form.Item>
     </Form>
   </div>
