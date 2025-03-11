@@ -19,12 +19,13 @@ def queryAllWords():
   return words
 
 # 插入单词
-def insertWord():
+def insertWord(id,content):
+  # id应该自动生成
   # 创建会话
   db = SessionLocal() 
 
   # 数据库操作
-  new_word = Word(id=3,content='わたし')
+  new_word = Word(id=id,content=content)
   db.add(new_word)
   db.commit() # 提交更改
   db.refresh(new_word) #刷新对象，获取数据库生成的id

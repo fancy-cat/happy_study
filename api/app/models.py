@@ -2,7 +2,7 @@
 from sqlalchemy import Column, Integer,VARCHAR
 from app.database import Base
 
-# 定义任务模型
+# 单词模型
 class Word(Base):
   __tablename__ = 'words' # 表名
   id = Column(Integer, primary_key=True)
