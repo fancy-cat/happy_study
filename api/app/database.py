@@ -4,7 +4,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 # 数据库连接 URL（从环境变量读取
-DATABAE_URL = 'mysql+pymysql://root:Wang425.@localhost/study_application'
+# DATABAE_URL = 'mysql+pymysql://root:Wang425.@localhost/study_application'
+DATABAE_URL = 'mysql+pymysql://bao:bao123@47.116.180.225:33060/study_application'
 
 # 创建数据库引擎
 engine = create_engine(DATABAE_URL)
