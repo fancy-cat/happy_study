@@ -6,10 +6,11 @@ from app.database import Base
 class Source(Base):
   __tablename__ = 'source_type' # 表名
   id = Column(Integer, primary_key=True)
-  sourceType = Column(VARCHAR(45), primary_key=True)
+  source_type = Column(VARCHAR(45), primary_key=True)
+  source_type_name = Column(VARCHAR(45), primary_key=True)
 
   def __repr__(self): # 这个是干嘛的？
-    return f"<Word id={self.id}, word={self.sourceType}>"
+    return f"<Word id={self.id}, word={self.source_type_name}>"
   
 # 模型-单词
 class Word(Base):
