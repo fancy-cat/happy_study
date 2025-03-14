@@ -21,7 +21,13 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   function (response) {
     // 对响应数据做点什么
-    return response;
+    switch (response.code) {
+      case 200:
+        return response.data;
+      default:
+        // 其他响应码可以做点什么
+        return response.data;
+    }
   },
   function (error) {
     // 对响应错误做点什么

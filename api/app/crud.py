@@ -1,12 +1,29 @@
-from app.database import SessionLocal
+# from app.database import SessionLocal
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 from app.models import Word,Source
 # 创建表（如果表不存在）
 # Base.metadata.create_all(bind=engine)
 
-# 查看所有来源
+# 查询所有来源及相应数据
 def querySourceList(db: Session):
-  sources = db.query(Source).all()
+  result = (
+    db.query(
+      Source.source_type,
+      Source.source_type_name,
+      func.count(Word.id).label("word_count")
+    )
+    .join(Word, Source.source_type == Word.source_type, isouter=True) 
+    .group_by(Source.source_type)
+    .all()
+  )
+  # 如果返回的是 SQLAlchemy 的查询结果对象（如 Row 或模型实例），需要将其转换为字典
+  #将 SQLAlchemy Row 对象转换为字典（不转这一道就会报错
+  sources = [
+    {"source_type": row.source_type, "word_count": row.word_count,"source_type_name": row.source_type_name}
+    for row in result
+  ]
+  # isouter 左连接，确保没有来源的单词也能被查出来
   return sources
 
 # 查询所有单词
@@ -14,7 +31,6 @@ def queryAllWords(db: Session):
   words = db.query(Word).all()
   for word in words:
     print(word)
-
   return words
 
 # 插入单词

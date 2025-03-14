@@ -1,5 +1,5 @@
 import './home.css'
-import { Button,Descriptions,Avatar,Space } from 'antd';
+import { Button,Table,Avatar,Space } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { useNavigate } from "react-router";
 import React, {useEffect, useState} from 'react';
@@ -7,59 +7,30 @@ import { getSourceList } from '../../api/index';
 
 export default function Home() {
   let navigate = useNavigate();
-  // const StudyItem = [
-  //   {
-  //     name: '多邻国',
-  //     content:[
-  //       {
-  //         key: '1',
-  //         label: '单词',
-  //         children: '100',
-  //       },
-  //       {
-  //         key: '2',
-  //         label: '句子',
-  //         children: '200',
-  //       },
-  //       {
-  //         key: '3',
-  //         label: '笔记',
-  //         children: '200',
-  //       },
-  //       {
-  //         key: '4',
-  //         label: '疑问',
-  //         children: '10/200',
-  //       },
-  //     ]
-  //   },
-  //   {
-  //     name: '新标日',
-  //     content:[
-  //       {
-  //         key: '1',
-  //         label: '单词',
-  //         children: '100',
-  //       },
-  //       {
-  //         key: '2',
-  //         label: '句子',
-  //         children: '200',
-  //       },
-  //       {
-  //         key: '3',
-  //         label: '笔记',
-  //         children: '200',
-  //       },
-  //       {
-  //         key: '5',
-  //         label: '疑问',
-  //         children: '10/200',
-  //       },
-  //     ]
-  //   },
-  // ]
   const [studyItems, setStudyItems] = useState([])
+  const columns = [
+    {
+      title: '来源',
+      dataIndex: 'source_type_name',
+      key: 'source_type_name',
+    },
+    {
+      title: '单词',
+      dataIndex: 'word_count',
+      key: 'word_count',
+    },
+    {
+      title: '操作',
+      dataIndex: 'operate',
+      key: 'operate',
+      render: (_, record) => (
+        <Space size="middle">
+          <Button type="primary" size='small' onClick={() => goToAddPage(record)}>添加</Button>
+          <Button type="primary" size='small'>复习</Button>
+        </Space>
+      ),
+    },
+  ];
   const goToAddPage = () => {
     navigate("/add");
   }
@@ -83,21 +54,7 @@ export default function Home() {
       }}
     >
     <div><Avatar size={30} icon={<UserOutlined />} className='margin-right-10' />王ちゃん</div>
-    {
-      studyItems.map(item => (
-        <Descriptions
-          bordered
-          title={item.source_type_name}
-          size="small"
-          extra={<div>
-            <Button type="primary" size='small' className='margin-right-10' onClick={() => goToAddPage()}>添加</Button>
-            <Button type="primary" size='small'>复习</Button>
-          </div>}
-          items={item.content}
-        />
-      ))
-    }
-    
+    <Table columns={columns} dataSource={studyItems} pagination={false} />
     </Space>
   </div>
 }
